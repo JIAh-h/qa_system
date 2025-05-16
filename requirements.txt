@@ -1,0 +1,7 @@
+django
+torch>=1.10.0
+transformers>=4.15.0
+numpy>=1.19.0
+tqdm
+sentence-transformers>=2.2.0
+django-cors-headers

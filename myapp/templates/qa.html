@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI问答系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+        
+        /* 使用白色代码背景 */
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        /* 实现代码高亮效果 */
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9em;
+        }
+        
+        /* 自适应宽度 */
+        @media (max-width: 768px) {
+            #chat-container {
+                padding: 0.5rem;
+            }
+            .message {
+                max-width: 90%;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid rgba(100, 116, 139, 0.3);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 上下文按钮样式 */
+        .context-toggle {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            margin-top: 0.25rem;
+            background-color: #e5e7eb;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+        
+        .context-toggle:hover {
+            background-color: #d1d5db;
+        }
+        
+        .context-content {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <header class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">基于Transformer的问答系统</h1>
+            <p class="text-gray-600 mt-2">使用本地Transformer模型实现的智能问答系统</p>
+        </header>
+        
+        <div class="mb-6 flex flex-wrap gap-2 justify-center">
+            <button id="train-model-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                训练模型
+            </button>
+            <button id="update-kb-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                更新知识库
+            </button>
+            <label id="upload-dataset-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer">
+                上传问答数据集
+                <input type="file" id="qa-dataset-upload" class="hidden" accept=".json,.txt">
+            </label>
+            <div id="system-status" class="text-sm text-gray-600 mt-2 w-full text-center"></div>
+        </div>
+        
+        <!-- 添加训练模态框 -->
+        <div id="train-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 max-w-md w-full">
+                <h3 class="text-xl font-bold mb-4">训练模型</h3>
+                <p class="mb-4">请选择训练方式：</p>
+                
+                <div class="mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="train-type" value="pretrained" class="mr-2" checked>
+                        <span>使用预训练模型（推荐）</span>
+                    </label>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="train-type" value="dataset" class="mr-2">
+                        <span>使用自定义数据集训练</span>
+                    </label>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="train-type" value="kb_data" class="mr-2">
+                        <span>使用知识库中的datas.txt训练</span>
+                    </label>
+                </div>
+                
+                <div id="dataset-upload-section" class="mb-4 hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">上传问答数据集（JSON或TXT格式）</label>
+                    <input type="file" id="train-dataset-upload" class="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept=".json,.txt">
+                    <p class="text-xs text-gray-500 mt-1">支持的格式：JSON文件(包含问题和答案字段)，或TXT文件(问：...答：...格式)</p>
+                </div>
+                
+                <div class="flex justify-end space-x-2">
+                    <button id="cancel-train-btn" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">取消</button>
+                    <button id="confirm-train-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">开始训练</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="chat-container" class="bg-white rounded-xl shadow-md p-4 mb-4 min-h-[500px] max-h-[70vh] overflow-y-auto">
+            <!-- 消息将被动态添加到这里 -->
+            <div class="flex flex-col space-y-4">
+                <!-- 欢迎消息 -->
+                <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
+                        AI
+                    </div>
+                    <div class="ml-4 p-3 bg-gray-100 rounded-lg max-w-[80%] message">
+                        <p>您好！我是基于Transformer的AI小助手，有什么我可以帮助您的吗？</p>
+                        <p class="text-xs text-gray-500 mt-1">我使用本地知识库和Transformer模型来回答您的问题。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form id="question-form" class="flex gap-2 items-center">
+            <input type="text" 
+                   id="question-input" 
+                   class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="输入您的问题...">
+            <button type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('question-form');
+        const input = document.getElementById('question-input');
+        const chatContainer = document.getElementById('chat-container').querySelector('.flex');
+        const trainModelBtn = document.getElementById('train-model-btn');
+        const updateKbBtn = document.getElementById('update-kb-btn');
+        const systemStatus = document.getElementById('system-status');
+        const uploadDatasetBtn = document.getElementById('upload-dataset-btn');
+        const qaDatasetUpload = document.getElementById('qa-dataset-upload');
+        
+        // 训练模态框元素
+        const trainModal = document.getElementById('train-modal');
+        const cancelTrainBtn = document.getElementById('cancel-train-btn');
+        const confirmTrainBtn = document.getElementById('confirm-train-btn');
+        const datasetUploadSection = document.getElementById('dataset-upload-section');
+        const trainDatasetUpload = document.getElementById('train-dataset-upload');
+        const trainTypeRadios = document.getElementsByName('train-type');
+
+        // 为输入框添加回车提交
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // 显示/隐藏训练模态框
+        trainModelBtn.addEventListener('click', () => {
+            trainModal.classList.remove('hidden');
+        });
+
+        cancelTrainBtn.addEventListener('click', () => {
+            trainModal.classList.add('hidden');
+        });
+
+        // 根据选择的训练类型显示/隐藏上传区域
+        trainTypeRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'dataset') {
+                    datasetUploadSection.classList.remove('hidden');
+                } else {
+                    datasetUploadSection.classList.add('hidden');
+                }
+            });
+        });
+
+        // 处理训练按钮点击
+        confirmTrainBtn.addEventListener('click', async () => {
+            const selectedTrainType = document.querySelector('input[name="train-type"]:checked').value;
+            
+            // 关闭模态框
+            trainModal.classList.add('hidden');
+            
+            // 显示加载状态
+            systemStatus.textContent = '正在处理...';
+            trainModelBtn.disabled = true;
+            
+            try {
+                if (selectedTrainType === 'dataset') {
+                    // 使用自定义数据集训练
+                    const datasetFile = trainDatasetUpload.files[0];
+                    if (!datasetFile) {
+                        throw new Error('请选择数据集文件');
+                    }
+                    
+                    // 创建FormData对象
+                    const formData = new FormData();
+                    formData.append('qa_dataset', datasetFile);
+                    
+                    // 发送请求
+                    systemStatus.textContent = '正在上传数据集并训练模型...';
+                    const response = await fetch('/myapp/train/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.error || '训练失败');
+                    }
+                    
+                    systemStatus.textContent = result.message || '模型训练完成';
+                    
+                    // 显示成功消息
+                    appendBotMessage(`模型训练成功完成！${result.message || ''}`);
+                } else if (selectedTrainType === 'kb_data') {
+                    // 使用知识库中的数据集训练
+                    systemStatus.textContent = '正在使用知识库数据训练模型...';
+                    
+                    // 创建FormData对象，发送特殊标记
+                    const formData = new FormData();
+                    formData.append('use_kb_file', 'true');
+                    
+                    // 发送请求
+                    const response = await fetch('/myapp/train/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.error || '训练失败');
+                    }
+                    
+                    systemStatus.textContent = result.message || '模型训练完成';
+                    
+                    // 显示成功消息
+                    appendBotMessage(`使用datas.txt训练模型成功！${result.message || ''}`);
+                } else {
+                    // 使用预训练模型
+                    systemStatus.textContent = '正在加载预训练模型...';
+                    const response = await fetch('/myapp/train/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(result.error || '加载模型失败');
+                    }
+                    
+                    systemStatus.textContent = result.message || '预训练模型加载完成';
+                    
+                    // 显示成功消息
+                    appendBotMessage('预训练模型已成功加载！您现在可以开始提问了。');
+                }
+            } catch (error) {
+                console.error('训练错误:', error);
+                systemStatus.textContent = `错误: ${error.message}`;
+                appendBotMessage(`训练过程中发生错误: ${error.message}`);
+            } finally {
+                trainModelBtn.disabled = false;
+            }
+        });
+
+        // 处理直接上传数据集按钮
+        qaDatasetUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            systemStatus.textContent = '正在上传问答数据集...';
+            uploadDatasetBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            try {
+                const formData = new FormData();
+                formData.append('qa_dataset', file);
+                
+                const response = await fetch('/myapp/train/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || '处理数据集失败');
+                }
+                
+                systemStatus.textContent = result.message || '数据集已处理';
+                appendBotMessage(`数据集上传并处理成功！${result.message || ''}`);
+            } catch (error) {
+                console.error('上传错误:', error);
+                systemStatus.textContent = `错误: ${error.message}`;
+                appendBotMessage(`上传数据集时发生错误: ${error.message}`);
+            } finally {
+                uploadDatasetBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                // 清空文件输入，允许选择相同文件
+                qaDatasetUpload.value = '';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = input.value.trim();
+            if (!question) return;
+
+            // 显示用户问题（右侧）
+            appendUserMessage(question);
+            input.value = '';
+
+            // 添加加载状态
+            const loadingElement = appendBotMessage('<div class="loading-spinner"></div> 思考中...');
+
+            try {
+                const response = await fetch('/myapp/qa/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `question=${encodeURIComponent(question)}`
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // 替换加载状态为实际回复
+                let messageHtml = formatMessage(data.answer);
+                
+                // 仅当状态为成功且不是直接匹配时，才添加上下文
+                if (data.status === 'success' && data.context) {
+                    const contextId = `context-${Date.now()}`;
+                    messageHtml += `
+                        <div class="mt-2">
+                            <button class="context-toggle" onclick="toggleContext('${contextId}')">
+                                显示参考上下文 ▼
+                            </button>
+                            <div id="${contextId}" class="context-content">
+                                ${formatMessage(data.context)}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                loadingElement.innerHTML = messageHtml;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                // 替换加载状态为错误消息
+                loadingElement.innerHTML = `<p class="text-red-600">错误: ${error.message}</p>`;
+            }
+            
+            // 滚动到底部
+            chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+        });
+        
+        // 更新知识库按钮
+        updateKbBtn.addEventListener('click', async () => {
+            try {
+                updateKbBtn.disabled = true;
+                updateKbBtn.innerHTML = '<div class="loading-spinner mr-2"></div> 更新中...';
+                systemStatus.textContent = '正在更新知识库，请稍候...';
+                
+                const response = await fetch('/myapp/update_kb/', {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                systemStatus.textContent = `知识库更新完成！共加载了 ${data.document_count} 个文档，${data.chunk_count} 个文本块。`;
+                appendBotMessage('我的知识库已经更新，您可以问我最新的信息了！');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                systemStatus.textContent = `更新失败: ${error.message}`;
+                appendBotMessage(`更新知识库时发生错误: ${error.message}`);
+            } finally {
+                updateKbBtn.disabled = false;
+                updateKbBtn.textContent = '更新知识库';
+            }
+        });
+
+        function appendUserMessage(content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start justify-end';
+            messageDiv.innerHTML = `
+                <div class="mr-4 p-3 bg-blue-100 rounded-lg message max-w-[80%]">
+                    <p>${content}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white flex-shrink-0">
+                    您
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+        }
+
+        function appendBotMessage(content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start';
+            messageDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white flex-shrink-0">
+                    AI
+                </div>
+                <div class="ml-4 p-3 bg-gray-100 rounded-lg message max-w-[80%]">
+                    ${formatMessage(content)}
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+            
+            // 返回内容元素以便更新
+            return messageDiv.querySelector('.message');
+        }
+        
+        function formatMessage(content) {
+            // 清理问答标记
+            if (typeof content === 'string') {
+                // 移除"问："开头
+                if (content.startsWith("问：")) {
+                    content = content.substring(content.indexOf("问：") + 2);
+                }
+                
+                // 移除"答："标记
+                if (content.includes("答：")) {
+                    content = content.substring(content.indexOf("答：") + 2);
+                }
+                
+                // 移除所有可能的问答标记（针对包含多个问答对的情况）
+                content = content.replace(/问：[^答]*答：/g, "");
+                
+                // 如果答案包含多个句子，只显示第一句
+                const sentences = content.split('。');
+                if (sentences.length > 1) {
+                    content = sentences[0].trim() + '。';
+                }
+            }
+            
+            // 处理代码块 ```code``` 格式
+            content = content.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            
+            // 处理单行代码 `code` 格式
+            content = content.replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-pink-600">$1</code>');
+            
+            // 处理Markdown风格的链接 [text](url)
+            content = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-blue-600 underline">$1</a>');
+            
+            // 处理换行符
+            content = content.replace(/\n/g, '<br>');
+            
+            return content;
+        }
+        
+        // 切换上下文显示
+        function toggleContext(contextId) {
+            const contextElement = document.getElementById(contextId);
+            const toggleButton = contextElement.previousElementSibling;
+            
+            if (contextElement.style.display === 'block') {
+                contextElement.style.display = 'none';
+                toggleButton.textContent = '显示参考上下文 ▼';
+            } else {
+                contextElement.style.display = 'block';
+                toggleButton.textContent = '隐藏参考上下文 ▲';
+            }
+        }
+        
+        // 全局函数定义，用于上下文切换
+        window.toggleContext = toggleContext;
+    </script>
+</body>
+</html>

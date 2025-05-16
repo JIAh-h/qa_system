@@ -1,0 +1,1608 @@
+INFO 2025-05-13 23:24:54,759 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:24:56,089 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_system\settings.py changed, reloading.
+INFO 2025-05-13 23:24:56,783 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:27:00,576 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:27:03,872 basehttp "GET /myapp/qa/ HTTP/1.1" 200 4735
+WARNING 2025-05-13 23:27:07,870 log Forbidden (CSRF cookie not set.): /myapp/qa/
+WARNING 2025-05-13 23:27:07,871 basehttp "POST /myapp/qa/ HTTP/1.1" 403 2786
+INFO 2025-05-13 23:29:37,352 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:29:38,921 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:29:42,663 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:29:43,437 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:30:39,786 basehttp "GET /myapp/qa/ HTTP/1.1" 200 5104
+WARNING 2025-05-13 23:30:43,678 log Forbidden (CSRF cookie not set.): /myapp/qa/
+WARNING 2025-05-13 23:30:43,679 basehttp "POST /myapp/qa/ HTTP/1.1" 403 2786
+INFO 2025-05-13 23:33:31,263 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:33:32,572 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:33:40,409 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:33:41,008 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:33:51,867 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:33:52,707 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:34:03,643 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:34:04,302 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:34:26,315 basehttp "GET /myapp/qa/ HTTP/1.1" 200 5104
+WARNING 2025-05-13 23:34:30,350 log Forbidden (CSRF cookie not set.): /myapp/qa/
+WARNING 2025-05-13 23:34:30,352 basehttp "POST /myapp/qa/ HTTP/1.1" 403 2786
+INFO 2025-05-13 23:36:59,612 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:37:00,494 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:37:02,234 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py changed, reloading.
+INFO 2025-05-13 23:37:03,411 autoreload Watching for file changes with StatReloader
+INFO 2025-05-13 23:37:10,403 autoreload D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_system\settings.py changed, reloading.
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+知识库目录不存在: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\..\knowledge_base
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+训练模型时出错: No module named 'transformer_qa'
+Traceback (most recent call last):
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py", line 123, in train_model_view
+    from .train_model import create_synthetic_data_from_knowledge_base, prepare_custom_data
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\train_model.py", line 10, in <module>
+    from transformer_qa import TransformerQA
+ModuleNotFoundError: No module named 'transformer_qa'
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 3, 块数: 6
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 4, 块数: 8
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+模型配置不存在，将使用预训练模型: distilbert-base-uncased
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+知识库分块数量(14)小于请求的样本数(100)，将生成所有可能的样本
+生成了 8 个合成样本并保存到: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备训练数据...
+从文件加载自定义数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备了 7 个训练样本和 1 个验证样本
+开始训练模型...
+开始 Epoch 1/2
+Epoch 1 平均训练损失: 5.8777
+Epoch 1 验证损失: 5.5988
+开始 Epoch 2/2
+Epoch 2 平均训练损失: 5.4812
+Epoch 2 验证损失: 5.1738
+模型保存到 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+接收到问题: 什么是NLP
+搜索查询: 什么是NLP
+使用问答模型预测答案...
+接收到问题: 你是谁
+搜索查询: 你是谁
+使用问答模型预测答案...
+接收到问题: 什么是RAG
+搜索查询: 什么是RAG
+使用问答模型预测答案...
+接收到问题: 什么是自然语言处理
+搜索查询: 什么是自然语言处理
+使用问答模型预测答案...
+接收到问题: 什么是python
+搜索查询: 什么是python
+使用问答模型预测答案...
+重新加载知识库...
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 4, 块数: 8
+接收到问题: 什么是python
+搜索查询: 什么是python
+使用问答模型预测答案...
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+知识库分块数量(14)小于请求的样本数(100)，将生成所有可能的样本
+生成了 10 个合成样本并保存到: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备训练数据...
+从文件加载自定义数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备了 9 个训练样本和 1 个验证样本
+开始训练模型...
+开始 Epoch 1/2
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 4, 块数: 8
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+知识库分块数量(14)小于请求的样本数(100)，将生成所有可能的样本
+生成了 9 个合成样本并保存到: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备训练数据...
+从文件加载自定义数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model\synthetic_data.json
+准备了 8 个训练样本和 1 个验证样本
+开始训练模型...
+开始 Epoch 1/2
+Epoch 1 平均训练损失: 5.0985
+Epoch 1 验证损失: 5.1109
+开始 Epoch 2/2
+Epoch 2 平均训练损失: 4.2759
+Epoch 2 验证损失: 4.8906
+训练模型时出错: Error while serializing: IoError(Os { code: 1224, kind: Uncategorized, message: "请求的操作无法在使用用户映射区域打开的文件上执行。" })
+Traceback (most recent call last):
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\views.py", line 141, in train_model_view
+    qa_model.train(
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\myapp\transformer_qa.py", line 202, in train
+    self.model.save_pretrained(save_path)
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\.venv\Lib\site-packages\transformers\modeling_utils.py", line 3564, in save_pretrained
+    safe_save_file(shard, os.path.join(save_directory, shard_file), metadata={"format": "pt"})
+  File "D:\学习\大三\NLP\NLP_sy\sy3\qa_system\.venv\Lib\site-packages\safetensors\torch.py", line 286, in save_file
+    serialize_file(_flatten(tensors), filename, metadata=metadata)
+safetensors_rust.SafetensorError: Error while serializing: IoError(Os { code: 1224, kind: Uncategorized, message: "请求的操作无法在使用用户映射区域打开的文件上执行。" })
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt
+加载文档: rag_intro.txt
+加载文档: sample_knowledge.txt
+加载文档: vector_db.txt
+为所有文档生成嵌入向量
+将文档分块，块大小: 1000，重叠: 200
+编码完成。文档数: 4, 块数: 8
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+知识库分块数量(15)小于请求的样本数(50)，将生成所有可能的样本
+生成了 8 个合成样本并保存到: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747317030.json
+准备训练数据...
+从文件加载自定义数据: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747317030.json
+准备了 7 个训练样本和 1 个验证样本
+开始训练模型，使用临时保存路径: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 4.5037
+Epoch 1 验证损失: 3.8886
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+接收到问题: 你好,你是谁
+搜索查询: 你好,你是谁
+使用问答模型预测答案...
+预测过程中出错: 'dict' object has no attribute 'input_ids'
+接收到问题: 什么是python
+搜索查询: 什么是python
+使用问答模型预测答案...
+预测过程中出错: 'dict' object has no attribute 'input_ids'
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-uncased
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+已清理临时目录: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+知识库分块数量(15)小于请求的样本数(50)，将生成所有可能的样本
+生成了 8 个合成样本并保存到: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747317434.json
+准备训练数据...
+从文件加载自定义数据: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747317434.json
+准备了 7 个训练样本和 1 个验证样本
+开始训练模型，使用临时保存路径: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 4.9787
+Epoch 1 验证损失: 4.6987
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+初始化新模型 distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+加载预训练模型失败: distilbert-base-cased-distilled-squad does not appear to have a file named pytorch_model.bin but there is a file for TensorFlow weights. Use `from_tf=True` to load this model from those weights.
+尝试使用后备模型: distilbert-base-cased
+模型初始化失败: distilbert-base-cased does not appear to have a file named pytorch_model.bin, model.safetensors, tf_model.h5, model.ckpt or flax_model.msgpack.
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+已清理临时目录: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+从知识库生成合成训练数据...
+从知识库创建合成数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+将文档分块，块大小: 300，重叠: 50
+文档 nlp_intro.txt 被分成了 5 个块
+文档 rag_intro.txt 被分成了 7 个块
+文档 sample_knowledge.txt 被分成了 4 个块
+文档 vector_db.txt 被分成了 9 个块
+总共生成了 25 个文本块
+生成了 12 个合成样本并保存到: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747318873.json
+准备训练数据...
+从文件加载自定义数据: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model\synthetic_data_1747318873.json
+准备了 10 个训练样本和 2 个验证样本
+开始训练模型，使用临时保存路径: C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 4.7836
+Epoch 1 验证损失: 4.4129
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: nlp_intro.txt, 长度: 933 字符
+加载文档: rag_intro.txt, 长度: 1308 字符
+加载文档: sample_knowledge.txt, 长度: 890 字符
+加载文档: vector_db.txt, 长度: 1455 字符
+成功加载了 4 个文档
+为所有文档生成嵌入向量
+编码文档: nlp_intro.txt
+编码文档: rag_intro.txt
+编码文档: sample_knowledge.txt
+编码文档: vector_db.txt
+将文档分块，块大小: 500，重叠: 100
+文档 nlp_intro.txt 被分成了 3 个块
+文档 rag_intro.txt 被分成了 4 个块
+文档 sample_knowledge.txt 被分成了 3 个块
+文档 vector_db.txt 被分成了 5 个块
+总共生成了 15 个文本块
+编码块: nlp_intro.txt_chunk_0
+编码块: nlp_intro.txt_chunk_351
+编码块: nlp_intro.txt_chunk_355
+编码块: rag_intro.txt_chunk_0
+编码块: rag_intro.txt_chunk_301
+编码块: rag_intro.txt_chunk_347
+编码块: rag_intro.txt_chunk_384
+编码块: sample_knowledge.txt_chunk_0
+编码块: sample_knowledge.txt_chunk_361
+编码块: sample_knowledge.txt_chunk_363
+编码块: vector_db.txt_chunk_0
+编码块: vector_db.txt_chunk_264
+编码块: vector_db.txt_chunk_320
+编码块: vector_db.txt_chunk_288
+编码块: vector_db.txt_chunk_331
+编码完成。文档数: 4, 块数: 15
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+跳过训练过程，直接使用预训练模型...
+正在加载预训练模型: distilbert-base-cased-distilled-squad
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+模型测试成功，预测结果: Python
+模型组件已保存到: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+接收到问题: 什么是python
+搜索查询: 什么是python
+使用问答模型预测答案...
+接收到问题: 什么是java
+搜索查询: 什么是java
+使用问答模型预测答案...
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+使用知识库中的数据文件: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+准备训练数据...
+从文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件中解析出 20 个问答对
+从文件中加载了 20 个问答对
+准备了 18 个训练样本和 2 个验证样本
+成功解析 18 个训练样本和 2 个验证样本
+开始训练模型，批量大小: 1，训练轮次: 1
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 0.1823
+Epoch 1 验证损失: 0.0001
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+从 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model 加载模型
+接收到问题: 今天吃什么
+搜索查询: 今天吃什么
+使用问答模型预测答案...
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+使用知识库中的数据文件: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+准备训练数据...
+从文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件中解析出 20 个问答对
+从文件中加载了 20 个问答对
+准备了 18 个训练样本和 2 个验证样本
+成功解析 18 个训练样本和 2 个验证样本
+开始训练模型，批量大小: 1，训练轮次: 1
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 0.1570
+Epoch 1 验证损失: 0.0001
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+从 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model 加载模型
+接收到问题: 今天吃什么
+搜索查询: 今天吃什么
+使用问答模型预测答案...
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+接收到问题: 今天吃什么
+搜索查询: 今天吃什么
+使用问答模型预测答案...
+使用知识库中的数据文件: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+准备训练数据...
+从文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件中解析出 20 个问答对
+从文件中加载了 20 个问答对
+准备了 18 个训练样本和 2 个验证样本
+成功解析 18 个训练样本和 2 个验证样本
+开始训练模型，批量大小: 1，训练轮次: 1
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 0.2033
+Epoch 1 验证损失: 0.0001
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+训练后未发现模型文件，尝试手动保存
+开始保存模型到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+保存模型配置...
+保存tokenizer...
+保存模型权重...
+模型保存不完整，缺少必要文件
+手动保存模型失败
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+加载模型失败: Error(s) in loading state_dict for Embedding:
+	size mismatch for weight: copying a param with shape torch.Size([30522, 768]) from checkpoint, the shape in current model is torch.Size([28996, 768]).
+将使用预训练模型: distilbert-base-cased-distilled-squad
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 1363 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 4 个块
+总共生成了 4 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_392
+编码块: datas.txt_chunk_368
+编码块: datas.txt_chunk_379
+编码完成。文档数: 1, 块数: 4
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+模型配置不存在，将使用预训练模型: distilbert-base-cased-distilled-squad
+使用知识库中的数据文件: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+准备训练数据...
+从文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件加载问答对数据: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base\datas.txt
+从文本文件中解析出 20 个问答对
+从文件中加载了 20 个问答对
+准备了 18 个训练样本和 2 个验证样本
+成功解析 18 个训练样本和 2 个验证样本
+开始训练模型，批量大小: 1，训练轮次: 1
+开始 Epoch 1/1
+Epoch 1 平均训练损失: 0.1758
+Epoch 1 验证损失: 0.0001
+模型保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+训练后未发现模型文件，尝试手动保存
+开始保存模型到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+保存模型...
+保存tokenizer...
+模型配置成功保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+未找到模型文件，尝试直接保存状态字典
+模型权重成功保存到 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model
+手动保存模型成功
+已复制模型文件: config.json
+已复制模型文件: pytorch_model.bin
+已复制模型文件: special_tokens_map.json
+已复制模型文件: synthetic_data_1747318873.json
+已复制模型文件: tokenizer.json
+已复制模型文件: tokenizer_config.json
+从 C:\Users\黎家豪\AppData\Local\Temp\qa_temp_model 加载模型
+接收到问题: 今天吃什么好
+从datas.txt中找到匹配问题: 今天吃什么好？, 相似度: 1.0
+接收到问题: 周末去哪
+搜索查询: 周末去哪
+返回最匹配的上下文，相似度: 0.2741118371486664
+使用问答模型预测答案...
+接收到问题: 周末去哪玩
+从datas.txt中找到匹配问题: 周末去哪玩？, 相似度: 1.0
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 5715 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 16 个块
+总共生成了 14 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_336
+编码块: datas.txt_chunk_363
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_344
+编码块: datas.txt_chunk_370
+编码块: datas.txt_chunk_377
+编码块: datas.txt_chunk_397
+编码块: datas.txt_chunk_331
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_299
+编码块: datas.txt_chunk_391
+编码块: datas.txt_chunk_300
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_399
+编码完成。文档数: 1, 块数: 14
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 5715 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 16 个块
+总共生成了 14 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_336
+编码块: datas.txt_chunk_363
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_344
+编码块: datas.txt_chunk_370
+编码块: datas.txt_chunk_377
+编码块: datas.txt_chunk_397
+编码块: datas.txt_chunk_331
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_299
+编码块: datas.txt_chunk_391
+编码块: datas.txt_chunk_300
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_399
+编码完成。文档数: 1, 块数: 14
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+初始化知识库管理器...
+加载编码器模型: sentence-transformers/all-MiniLM-L6-v2
+使用设备: cpu
+从目录加载知识库文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+从目录加载文档: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\knowledge_base
+加载文档: datas.txt, 长度: 5715 字符
+成功加载了 1 个文档
+为所有文档生成嵌入向量
+编码文档: datas.txt
+将文档分块，块大小: 500，重叠: 100
+文档 datas.txt 被分成了 16 个块
+总共生成了 14 个文本块
+编码块: datas.txt_chunk_0
+编码块: datas.txt_chunk_336
+编码块: datas.txt_chunk_363
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_344
+编码块: datas.txt_chunk_370
+编码块: datas.txt_chunk_377
+编码块: datas.txt_chunk_397
+编码块: datas.txt_chunk_331
+编码块: datas.txt_chunk_381
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_299
+编码块: datas.txt_chunk_391
+编码块: datas.txt_chunk_300
+编码块: datas.txt_chunk_323
+编码块: datas.txt_chunk_399
+编码完成。文档数: 1, 块数: 14
+初始化问答模型...
+使用设备: cpu
+加载预训练模型: distilbert-base-cased-distilled-squad
+预训练模型加载成功
+尝试加载已训练的模型: D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model
+从 D:\学习\大三\NLP\NLP_sy\sy3\qa_system\qa_model 加载模型
+接收到问题: 周末去哪玩
+从datas.txt中找到匹配问题: 周末去哪玩？, 相似度: 0.6666666666666667
+接收到问题: 周末去哪
+从datas.txt中找到匹配问题: 周末去哪玩？, 相似度: 0.5333333333333333
+接收到问题: 周末
+搜索查询: 周末
+返回最匹配的上下文，相似度: 0.1321372389793396
+使用问答模型预测答案...
+接收到问题: 你好啊
+从datas.txt中找到匹配问题: 你好, 相似度: 0.5333333333333333
+接收到问题: 今天怎么样
+搜索查询: 今天怎么样
+返回最匹配的上下文，相似度: 0.2316867858171463
+使用问答模型预测答案...
+接收到问题: 今天吃什么
+从datas.txt中找到匹配问题: 今天吃什么好？, 相似度: 0.5714285714285715
+接收到问题: 月薪5000要怎么样赚钱
+搜索查询: 月薪5000要怎么样赚钱
+返回最匹配的上下文，相似度: 0.33644697070121765
+使用问答模型预测答案...
+接收到问题: 月薪5000怎么办
+搜索查询: 月薪5000怎么办
+返回最匹配的上下文，相似度: 0.2984825372695923
+使用问答模型预测答案...
+接收到问题: 怎么理财
+搜索查询: 怎么理财
+返回最匹配的上下文，相似度: 0.153574138879776
+使用问答模型预测答案...
+接收到问题: 月薪5000怎么理财
+搜索查询: 月薪5000怎么理财
+返回最匹配的上下文，相似度: 0.31717485189437866
+使用问答模型预测答案...
+接收到问题: 月薪 5000 如何开始理财
+从datas.txt中找到匹配问题: 月薪 5000 如何开始理财？, 相似度: 0.7466666666666667
+只返回第一句答案: 用 “4321 法则” 分配：40% 存定期（每月 2000 元），30% 生活费（1500 元），20% 备用金（1000 元放余额宝），10% 学习投资（500 元买基金定投）。
