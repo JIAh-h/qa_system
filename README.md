@@ -1,105 +1,308 @@
-# 基于Transformer的问答系统
+# 智能问答系统
 
-这是一个使用Transformer模型和知识库实现的问答系统，能够根据上下文回答用户问题。
+这是一个基于BERT的智能问答系统，支持知识库管理、模型训练和问答功能。
 
-## 系统特点
+## 功能特点
 
-1. **本地模型推理**：使用Transformer架构的预训练模型进行本地推理，不依赖外部API
-2. **基于知识库的问答**：从自定义知识库中检索相关信息回答问题，而不是依赖预训练模型的参数知识
-3. **可训练**：支持使用自定义数据或自动生成的合成数据训练模型
-4. **可扩展知识库**：可以随时添加新文档到知识库中
+- 基于BERT的问答模型
+- 知识库管理
+- 模型训练和更新
+- 文档缓存机制
+- 安全访问控制
+- 配置管理
+- 日志系统
+- 模型预训练支持
+- 多模型集成
+- 实时问答响应
+- 知识库增量更新
+- 模型性能评估
+- 分布式训练支持
 
-## 系统架构
-
-- **前端**：基于HTML、CSS和JavaScript的简单Web界面
-- **后端**：使用Django框架
-- **核心组件**：
-  - `TransformerQA`：基于Transformer的问答模型
-  - `KnowledgeManager`：知识库管理和检索系统
-  - 训练和推理管道
-
-## 安装和运行
-
-### 环境要求
+## 系统要求
 
 - Python 3.8+
-- Django 4.0+
+- Django 3.2+
 - PyTorch 1.10+
 - Transformers 4.15+
-- 其他依赖请见requirements.txt
+- NumPy 1.19+
+- jieba
+- sentence-transformers 2.2+
+- tqdm
+- django-cors-headers
+- scikit-learn
+- pandas
+- matplotlib
+- tensorboard
 
-### 安装步骤
+## 安装
 
-1. 克隆仓库
-```
-git clone <repository-url>
+1. 克隆仓库：
+```bash
+git clone [repository_url]
 cd qa_system
 ```
 
-2. 创建并激活虚拟环境（推荐）
-```
-python -m venv .venv
-# 在Windows上
-.venv\Scripts\activate
-# 在Linux/Mac上
-source .venv/bin/activate
-```
-
-3. 安装依赖
-```
+2. 安装依赖：
+```bash
 pip install -r requirements.txt
 ```
 
-4. 准备知识库
-```
-# 在项目根目录下创建knowledge_base文件夹
-mkdir -p ../knowledge_base
-# 将您的文档(.txt, .md)放入此文件夹
-```
-
-5. 运行系统
-```
-python manage.py migrate
-python manage.py runserver
+3. 配置环境变量：
+```bash
+export DJANGO_SECRET_KEY='your-secret-key'
+export ENCRYPTION_KEY='your-encryption-key'
+export CUDA_VISIBLE_DEVICES='0'  # 设置GPU设备
 ```
 
-6. 访问系统
-在浏览器中访问 http://127.0.0.1:8000/
+## 配置说明
 
-## 使用指南
+系统配置位于 `myapp/config.py`，包含以下主要配置项：
 
-### 提问
+### 模型配置
+- MODEL_NAME: 使用的预训练模型名称
+- MODEL_PATH: 模型保存路径
+- KB_DIR: 知识库目录
+- MAX_LENGTH: 最大序列长度
+- TOP_K: 返回的最相关文档数
+- THRESHOLD: 相似度阈值
+- BATCH_SIZE: 训练批次大小
+- LEARNING_RATE: 学习率
+- EPOCHS: 训练轮数
+- WARMUP_STEPS: 预热步数
+- GRADIENT_ACCUMULATION_STEPS: 梯度累积步数
+- MAX_GRAD_NORM: 梯度裁剪阈值
+- WEIGHT_DECAY: 权重衰减率
 
-在输入框中输入您的问题，点击发送按钮或按回车键提交。系统会：
-1. 在知识库中找到与您问题相关的内容
-2. 根据上下文生成答案
-3. 提供展示参考上下文的选项
+### 系统配置
+- LOG_DIR: 日志目录
+- CACHE_DIR: 缓存目录
+- MAX_DOCUMENTS: 最大文档数
+- CHUNK_SIZE: 文档分块大小
+- CHUNK_OVERLAP: 分块重叠大小
+- MAX_MEMORY_USAGE: 最大内存使用比例
+- REQUEST_TIMEOUT: 请求超时时间
+- RATE_LIMIT: 每分钟最大请求数
+- GPU_MEMORY_FRACTION: GPU内存使用比例
+- NUM_WORKERS: 数据加载线程数
+- PIN_MEMORY: 是否使用固定内存
 
-### 训练模型
+### 安全配置
+- ALLOWED_HOSTS: 允许访问的主机列表
+- SECRET_KEY: Django密钥
+- DEBUG: 调试模式
+- ENCRYPTION_KEY: 数据加密密钥
+- TOKEN_EXPIRE_TIME: Token过期时间
+- MAX_LOGIN_ATTEMPTS: 最大登录尝试次数
 
-点击"训练模型"按钮可以使用知识库中的文档自动生成训练数据并训练模型。训练过程可能需要一些时间，取决于您的硬件配置。
+## 使用说明
 
-### 更新知识库
+### 1. 初始化系统
 
-添加新文档到knowledge_base文件夹后，点击"更新知识库"按钮刷新系统的知识。
-
-## 自定义和扩展
-
-### 添加自定义知识
-
-将TXT或MD格式的文档添加到knowledge_base文件夹中，然后点击"更新知识库"按钮。
-
-### 调整模型参数
-
-打开`myapp/views.py`文件，修改MODEL_CONFIG字典中的配置：
 ```python
-MODEL_CONFIG = {
-    'MODEL_NAME': 'distilbert-base-uncased',  # 可以改为其他Transformer模型
-    'MODEL_PATH': os.path.join(settings.BASE_DIR, 'qa_model'),
-    'KB_DIR': os.path.join(settings.BASE_DIR, '..', 'knowledge_base'),
+from myapp.views import init_qa_system
+
+# 初始化系统
+init_qa_system()
+```
+
+### 2. 问答功能
+
+```python
+from myapp.knowledge_manager import knowledge_manager
+
+# 生成答案
+answer = knowledge_manager.generate_answer("你的问题")
+```
+
+### 3. 模型训练
+
+```python
+from myapp.views import train_new_model
+
+# 训练新模型
+train_new_model(
+    train_data_path="path/to/train_data",
+    val_data_path="path/to/val_data",
+    model_config={
+        "learning_rate": 2e-5,
+        "batch_size": 16,
+        "epochs": 3
+    }
+)
+```
+
+### 4. 知识库更新
+
+```python
+from myapp.views import update_knowledge_view
+
+# 更新知识库
+update_knowledge_view(
+    new_docs_path="path/to/new_docs",
+    incremental=True
+)
+```
+
+### 5. 模型评估
+
+```python
+from myapp.views import evaluate_model
+
+# 评估模型性能
+metrics = evaluate_model(
+    test_data_path="path/to/test_data",
+    metrics=["accuracy", "f1", "precision", "recall"]
+)
+```
+
+## API接口
+
+### 1. 问答接口
+- 端点：`/qa/`
+- 方法：POST
+- 请求体：
+```json
+{
+    "question": "你的问题",
+    "top_k": 3,
+    "threshold": 0.7
+}
+```
+- 响应：
+```json
+{
+    "answer": "系统回答",
+    "confidence": 0.95,
+    "sources": ["文档1", "文档2"],
+    "status": "success"
 }
 ```
 
-## 许可
+### 2. 模型训练接口
+- 端点：`/train/`
+- 方法：POST
+- 功能：支持上传训练数据集或使用默认数据集
+- 请求体：
+```json
+{
+    "train_data": "训练数据路径",
+    "val_data": "验证数据路径",
+    "model_config": {
+        "learning_rate": 2e-5,
+        "batch_size": 16,
+        "epochs": 3
+    }
+}
+```
 
-本项目使用MIT许可证。 
+### 3. 知识库更新接口
+- 端点：`/update_knowledge/`
+- 方法：POST
+- 功能：重新加载知识库
+- 请求体：
+```json
+{
+    "new_docs_path": "新文档路径",
+    "incremental": true
+}
+```
+
+### 4. 模型评估接口
+- 端点：`/evaluate/`
+- 方法：POST
+- 功能：评估模型性能
+- 请求体：
+```json
+{
+    "test_data_path": "测试数据路径",
+    "metrics": ["accuracy", "f1", "precision", "recall"]
+}
+```
+
+## 安全特性
+
+1. 访问控制
+   - 主机白名单
+   - 请求频率限制
+   - 数据加密
+   - Token认证
+   - 登录尝试限制
+
+2. 缓存机制
+   - 模型缓存
+   - 文档缓存
+   - 自动过期清理
+   - 内存使用限制
+   - 缓存预热
+
+3. 错误处理
+   - 异常捕获
+   - 日志记录
+   - 优雅降级
+   - 错误重试
+   - 超时处理
+
+## 目录结构
+
+```
+qa_system/
+├── myapp/
+│   ├── __init__.py
+│   ├── config.py          # 配置管理
+│   ├── cache_manager.py   # 缓存管理
+│   ├── security.py        # 安全控制
+│   ├── knowledge_manager.py # 知识管理
+│   ├── train_model.py     # 模型训练
+│   ├── evaluate.py        # 模型评估
+│   ├── utils.py          # 工具函数
+│   └── views.py          # 视图处理
+├── knowledge_base/       # 知识库目录
+├── models/              # 模型目录
+├── logs/               # 日志目录
+├── cache/             # 缓存目录
+├── tests/             # 测试目录
+├── docs/              # 文档目录
+└── requirements.txt   # 依赖列表
+```
+
+## 注意事项
+
+1. 首次运行前请确保：
+   - 配置正确的环境变量
+   - 创建必要的目录结构
+   - 准备训练数据集
+   - 检查GPU可用性
+   - 设置适当的内存限制
+
+2. 安全建议：
+   - 定期更新密钥
+   - 限制访问IP
+   - 监控系统日志
+   - 定期备份数据
+   - 使用HTTPS
+
+3. 性能优化：
+   - 适当调整缓存大小
+   - 控制文档数量
+   - 定期清理缓存
+   - 使用GPU加速
+   - 优化数据加载
+
+4. 模型训练建议：
+   - 使用验证集监控训练
+   - 实现早停机制
+   - 保存最佳模型
+   - 使用学习率调度
+   - 实现梯度累积
+
+## 贡献指南
+
+1. Fork 项目
+2. 创建特性分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
+
+## 许可证
+
+MIT License 

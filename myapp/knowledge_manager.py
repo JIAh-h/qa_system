@@ -2,151 +2,129 @@ import os
 import glob
 import json
 import logging
-from typing import Dict, List, Tuple
+import threading
+from typing import Dict, List, Tuple, Optional
 import numpy as np
 from transformers import AutoTokenizer, BertForQuestionAnswering, pipeline
 import torch
 import time
 import traceback
 import jieba
+from .config import config
+from .cache_manager import model_cache, document_cache
+from .security import access_control
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class KnowledgeManager:
-    def __init__(self, encoder_model="models/bert_qa"):
+    def __init__(self):
         """初始化知识库管理器"""
-        self.encoder_model = encoder_model
-        self.tokenizer = None
-        self.model = None
-        self.qa_pipeline = None
         self.qa_pairs = []  # 存储问答对
+        self.documents = {}  # 存储文档
+        self.embeddings = {}  # 存储文档嵌入
+        self.lock = threading.Lock()
+        self.model_config = config.get_model_config()
+        self.system_config = config.get_system_config()
+        self._model = None
+        self._tokenizer = None
+        self._qa_pipeline = None
+        self._question_embeddings = {}  # 缓存问题的嵌入向量
         
-        # 初始化模型
-        try:
-            logger.info(f"加载本地预训练模型: {encoder_model}")
-            self.tokenizer = AutoTokenizer.from_pretrained(encoder_model, local_files_only=True)
-            self.model = BertForQuestionAnswering.from_pretrained(encoder_model, local_files_only=True)
-            
-            # 设置设备
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            logger.info(f"使用设备: {self.device}")
-            self.model.to(self.device)
-            
-            # 初始化问答pipeline
-            self.qa_pipeline = pipeline(
+    def _get_model_and_tokenizer(self):
+        """获取模型和分词器（带缓存）"""
+        if self._model is None or self._tokenizer is None:
+            logger.info("首次加载模型和分词器...")
+            self._model, self._tokenizer = model_cache.get_model()
+            logger.info("模型和分词器加载完成")
+        return self._model, self._tokenizer
+        
+    def _get_qa_pipeline(self):
+        """获取QA pipeline（带缓存）"""
+        if self._qa_pipeline is None:
+            logger.info("首次创建QA pipeline...")
+            model, tokenizer = self._get_model_and_tokenizer()
+            self._qa_pipeline = pipeline(
                 "question-answering",
-                model=self.model,
-                tokenizer=self.tokenizer,
+                model=model,
+                tokenizer=tokenizer,
                 device=0 if torch.cuda.is_available() else -1
             )
-            
-        except Exception as e:
-            logger.error(f"初始化模型失败: {str(e)}")
-            raise
-
-    def load_documents_from_directory(self, directory_path: str, extensions: List[str] = ['.txt', '.md', '.json']) -> Dict[str, str]:
-        """从目录加载文档"""
-        logger.info(f"从目录加载文档: {directory_path}")
+            logger.info("QA pipeline创建完成")
+        return self._qa_pipeline
         
-        if not os.path.exists(directory_path):
-            logger.error(f"目录不存在: {directory_path}")
-            return {}
-        
-        # 构建文件匹配模式
-        patterns = [os.path.join(directory_path, f"*{ext}") for ext in extensions]
-        
-        # 获取所有匹配的文件
-        all_files = []
-        for pattern in patterns:
-            all_files.extend(glob.glob(pattern))
-        
-        if not all_files:
-            logger.warning(f"在目录 {directory_path} 中没有找到符合条件的文件")
-            return {}
-        
-        # 加载文档
-        loaded_docs = {}
-        for file_path in all_files:
-            doc_id = os.path.basename(file_path)
-            try:
-                if file_path.endswith('.json'):
-                    # 处理JSON文件
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                        # 处理对话列表
-                        for conv in data:
-                            if isinstance(conv, list) and len(conv) >= 2:
-                                # 将对话转换为问答对
-                                for i in range(0, len(conv)-1, 2):
-                                    if i+1 < len(conv):
-                                        self.qa_pairs.append((conv[i], conv[i+1]))
-                        content = json.dumps(data, ensure_ascii=False)
-                else:
-                    # 处理其他类型的文件
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        content = f.read()
+    def _get_question_embedding(self, question: str) -> np.ndarray:
+        """获取问题的语义表示（带缓存）"""
+        try:
+            # 检查缓存
+            if question in self._question_embeddings:
+                logger.info("使用缓存的问题嵌入")
+                return self._question_embeddings[question]
                 
-                if not content.strip():
-                    logger.warning(f"文档 {doc_id} 为空")
-                    continue
-                    
-                loaded_docs[doc_id] = content
-                logger.info(f"加载文档: {doc_id}, 长度: {len(content)} 字符")
-            except Exception as e:
-                logger.error(f"加载文档失败 {file_path}: {str(e)}")
-        
-        if not loaded_docs:
-            logger.warning("没有成功加载任何文档")
-        else:
-            logger.info(f"成功加载了 {len(loaded_docs)} 个文档")
-            logger.info(f"从文档中提取了 {len(self.qa_pairs)} 个问答对")
+            logger.info("开始计算问题嵌入...")
+            model, tokenizer = self._get_model_and_tokenizer()
             
-        return loaded_docs
-
-    def _calculate_similarity(self, q1: str, q2: str) -> float:
-        """计算两个问题的相似度"""
-        # 使用jieba分词
-        words1 = set(jieba.cut(q1))
-        words2 = set(jieba.cut(q2))
-        
-        # 计算Jaccard相似度
-        intersection = len(words1.intersection(words2))
-        union = len(words1.union(words2))
-        
-        return intersection / union if union > 0 else 0
-
+            inputs = tokenizer(
+                question,
+                max_length=self.model_config['MAX_LENGTH'],
+                padding=True,
+                truncation=True,
+                return_tensors="pt"
+            )
+            
+            with torch.no_grad():
+                outputs = model.bert(**inputs)
+                embedding = outputs.last_hidden_state[0, 0, :].numpy()
+                embedding = embedding / np.linalg.norm(embedding)
+                
+            # 存入缓存
+            self._question_embeddings[question] = embedding
+            logger.info("问题嵌入计算完成并缓存")
+            return embedding
+                
+        except Exception as e:
+            logger.error(f"获取问题嵌入时出错: {str(e)}")
+            logger.error(f"错误详情: {traceback.format_exc()}")
+            return np.zeros(768)
+            
     def generate_answer(self, question: str) -> str:
-        """生成答案，优先使用数据集中的回答"""
+        """生成答案"""
         try:
             if not question or not question.strip():
                 return "问题不能为空"
+                
+            logger.info(f"开始处理问题: {question}")
             
             # 首先在数据集中查找相似问题
-            best_similarity = 0.3  # 设置相似度阈值
+            best_similarity = 0.3
             best_answer = None
+            best_question = None
             
+            # 获取问题的语义表示（使用缓存）
+            question_embedding = self._get_question_embedding(question)
+            
+            # 计算相似度
             for q, a in self.qa_pairs:
-                similarity = self._calculate_similarity(question, q)
+                similarity = self._calculate_semantic_similarity(question, q, question_embedding)
                 if similarity > best_similarity:
                     best_similarity = similarity
                     best_answer = a
-            
+                    best_question = q
+                    
             # 如果在数据集中找到相似问题，返回对应的答案
             if best_answer:
+                logger.info(f"找到相似问题: {best_question} (相似度: {best_similarity:.2f})")
                 return best_answer
-            
+                
             # 如果没有找到相似问题，使用模型生成答案
-            context = """
-            这是一个智能问答系统。我可以回答各种问题。
-            如果你问好，我会说：你好！很高兴见到你。
-            如果你问天气，我会说：抱歉，我暂时无法获取实时天气信息。
-            如果你问时间，我会说：抱歉，我暂时无法获取实时时间信息。
-            如果你问其他问题，我会尽力给出合适的回答。
-            """
+            qa_pipeline = self._get_qa_pipeline()
             
-            result = self.qa_pipeline(
+            context = self._get_context_for_question(question)
+            if not context:
+                context = "这是一个智能问答系统。我可以回答各种问题。"
+                
+            result = qa_pipeline(
                 question=question,
                 context=context,
                 max_answer_len=100,
@@ -157,365 +135,154 @@ class KnowledgeManager:
                 return result['answer']
             else:
                 return "抱歉，我暂时无法回答这个问题。请换个方式提问，或者询问其他问题。"
-            
+                
         except Exception as e:
             logger.error(f"生成答案时出错: {str(e)}")
+            logger.error(f"错误详情: {traceback.format_exc()}")
             return "抱歉，生成答案时出现错误。"
-
-    def _tokenize(self, text):
-        """使用jieba进行中文分词"""
-        return list(jieba.cut(text))
-    
-    def chunk_documents(self, chunk_size: int = 500, chunk_overlap: int = 100) -> Dict[str, List[Tuple[str, str]]]:
-        """将文档分块"""
-        logger.info(f"将文档分块，块大小: {chunk_size}，重叠: {chunk_overlap}")
-        
-        if not self.documents:
-            logger.warning("没有文档可供分块")
-            return {}
             
-        chunked_docs = {}
-        
-        for doc_id, content in self.documents.items():
-            # 按对话分块
-            conversations = content.split('\n')
-            chunks = []
+    def load_documents_from_directory(self, directory_path: str) -> bool:
+        """从目录加载文档"""
+        try:
+            logger.info(f"从目录加载文档: {directory_path}")
             
-            for i, conv in enumerate(conversations):
-                if not conv.strip():
+            if not os.path.exists(directory_path):
+                logger.error(f"目录不存在: {directory_path}")
+                return False
+                
+            # 获取所有文件
+            files = []
+            for ext in ['.txt', '.md', '.json']:
+                files.extend([f for f in os.listdir(directory_path) if f.endswith(ext)])
+                
+            if not files:
+                logger.warning(f"在目录 {directory_path} 中没有找到符合条件的文件")
+                return False
+                
+            # 加载文档
+            for file_name in files:
+                file_path = os.path.join(directory_path, file_name)
+                try:
+                    if file_name.endswith('.json'):
+                        # 处理JSON文件
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                            # 处理对话列表
+                            for conv in data:
+                                if isinstance(conv, list) and len(conv) >= 2:
+                                    # 将对话转换为问答对
+                                    for i in range(0, len(conv)-1, 2):
+                                        if i+1 < len(conv):
+                                            self.qa_pairs.append((conv[i], conv[i+1]))
+                                            # 加密敏感数据
+                                            encrypted_q = access_control.encrypt_sensitive_data(conv[i])
+                                            encrypted_a = access_control.encrypt_sensitive_data(conv[i+1])
+                                            document_cache.set_document(f"qa_{len(self.qa_pairs)}", 
+                                                                      json.dumps({"q": encrypted_q, "a": encrypted_a}))
+                    else:
+                        # 处理其他类型的文件
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                            if content.strip():
+                                self.documents[file_name] = content
+                                document_cache.set_document(file_name, content)
+                                
+                except Exception as e:
+                    logger.error(f"加载文档失败 {file_path}: {str(e)}")
                     continue
                     
-                # 每个对话作为一个块
-                chunk_id = f"{doc_id}_chunk_{i}"
-                chunks.append((chunk_id, conv))
-            
-            chunked_docs[doc_id] = chunks
-            logger.info(f"文档 {doc_id} 被分成了 {len(chunks)} 个块")
-        
-        # 更新文档分块
-        self.document_chunks = chunked_docs
-        
-        # 展平所有块，方便后续处理
-        all_chunks = {}
-        for chunks in chunked_docs.values():
-            for chunk_id, chunk_content in chunks:
-                all_chunks[chunk_id] = chunk_content
-        
-        logger.info(f"总共生成了 {len(all_chunks)} 个文本块")
-        return all_chunks
-    
-    def encode_text(self, text: str, max_retries: int = 3) -> np.ndarray:
-        """使用预训练模型编码文本，获取嵌入向量"""
-        # 切换到评估模式
-        self.model.eval()
-        
-        # 对于过长的文本，截断处理
-        if len(text) > 10000:
-            logger.warning(f"文本过长 ({len(text)} 字符)，将被截断到前10000个字符")
-            text = text[:10000]
-        
-        for retry in range(max_retries):
-            try:
-                # 对文本进行编码
-                with torch.no_grad():
-                    inputs = self.tokenizer(text, padding=True, truncation=True, 
-                                           max_length=512, return_tensors="pt")
-                    # 将输入移动到设备
-                    inputs = {k: v.to(self.device) for k, v in inputs.items()}
-                    
-                    # 获取模型输出
-                    outputs = self.model(**inputs)
-                    
-                    # 使用最后一层隐藏状态的平均值作为文本嵌入
-                    attention_mask = inputs['attention_mask']
-                    embeddings = outputs.last_hidden_state
-                    
-                    # 对隐藏状态求平均
-                    mask = attention_mask.unsqueeze(-1).expand(embeddings.size()).float()
-                    masked_embeddings = embeddings * mask
-                    summed = torch.sum(masked_embeddings, dim=1)
-                    counts = torch.sum(attention_mask, dim=1, keepdim=True).float()
-                    mean_pooled = summed / counts
-                    
-                    # 归一化嵌入向量
-                    normalized_embeddings = normalize(mean_pooled, p=2, dim=1)
-                    
-                    # 转换为NumPy数组并返回
-                    return normalized_embeddings.cpu().numpy()[0]
-            except Exception as e:
-                logger.error(f"编码失败 (尝试 {retry+1}/{max_retries}): {str(e)}")
-                if retry < max_retries - 1:
-                    time.sleep(1)  # 等待一秒后重试
-                else:
-                    logger.error(f"编码失败，详细错误: {traceback.format_exc()}")
-                    # 返回零向量作为后备方案
-                    return np.zeros(768)  # 假设embedding维度为768
-    
-    def encode_documents(self) -> None:
-        """为所有文档生成嵌入向量"""
-        logger.info("为所有文档生成嵌入向量")
-        
-        if not self.documents:
-            logger.warning("没有文档可供编码")
-            return
-        
-        # 为完整文档生成嵌入
-        for doc_id, content in self.documents.items():
-            try:
-                self.embeddings[doc_id] = self.encode_text(content)
-                logger.info(f"编码文档: {doc_id}")
-            except Exception as e:
-                logger.error(f"编码文档 {doc_id} 失败: {str(e)}")
-        
-        # 为文档分块生成嵌入
-        if not self.document_chunks:
-            self.chunk_documents()
-        
-        for doc_id, chunks in self.document_chunks.items():
-            for chunk_id, chunk_content in chunks:
-                try:
-                    self.chunk_embeddings[chunk_id] = self.encode_text(chunk_content)
-                    logger.info(f"编码块: {chunk_id}")
-                except Exception as e:
-                    logger.error(f"编码块 {chunk_id} 失败: {str(e)}")
-        
-        logger.info(f"编码完成。文档数: {len(self.embeddings)}, 块数: {len(self.chunk_embeddings)}")
-    
-    def search(self, query: str, search_type: str = 'chunk', top_k: int = 3) -> List[Tuple[str, str, float]]:
-        """搜索与查询最相关的文档或文档块"""
-        logger.info(f"搜索查询: {query}")
-        
-        if not self.documents:
-            logger.warning("没有文档可供搜索")
-            return []
-            
-        # 如果还没有编码，进行编码
-        if not self.embeddings and not self.chunk_embeddings:
-            logger.info("尚未生成嵌入，现在进行编码...")
-            self.encode_documents()
-            
-        if search_type == 'chunk' and not self.chunk_embeddings:
-            logger.warning("没有块嵌入可用，将搜索整个文档")
-            search_type = 'document'
-            
-        if search_type == 'document' and not self.embeddings:
-            logger.warning("没有文档嵌入可用，将搜索文档块")
-            search_type = 'chunk'
-            
-        # 编码查询
-        query_embedding = self.encode_text(query)
-        
-        results = []
-        
-        # 根据搜索类型选择搜索范围
-        if search_type == 'document':
-            # 搜索整个文档
-            for doc_id, embedding in self.embeddings.items():
-                # 计算余弦相似度
-                similarity = np.dot(query_embedding, embedding)
-                results.append((doc_id, self.documents[doc_id], float(similarity)))
-        else:
-            # 搜索文档块
-            for chunk_id, embedding in self.chunk_embeddings.items():
-                # 计算余弦相似度
-                similarity = np.dot(query_embedding, embedding)
-                # 从chunk_id中提取原始文档ID
-                doc_id = chunk_id.split('_chunk_')[0]
-                # 获取块内容
-                chunk_content = self.document_chunks.get(doc_id, [])
-                for c_id, c_content in chunk_content:
-                    if c_id == chunk_id:
-                        results.append((doc_id, c_content, float(similarity)))
-                        break
-        
-        # 按相似度排序
-        results.sort(key=lambda x: x[2], reverse=True)
-        
-        # 返回top_k个结果
-        return results[:top_k]
-    
-    def get_context_for_question(self, question: str, top_k: int = 3) -> str:
-        """为问题获取相关上下文"""
-        if not question or not question.strip():
-            logger.warning("提供的问题为空")
-            return ""
-        
-        # 确保已编码文档
-        if not self.chunk_embeddings and not self.embeddings:
-            logger.info("文档尚未编码，正在进行编码...")
-            if not self.documents:
-                logger.warning("没有加载任何文档")
-                return ""
-            
-            self.encode_documents()
-        
-        # 优先使用块搜索，如果没有块则使用文档搜索
-        search_type = 'chunk' if self.chunk_embeddings else 'document'
-        
-        # 搜索与问题相关的文档块或文档
-        relevant_items = self.search(question, search_type, top_k=top_k)
-        
-        if not relevant_items:
-            logger.warning(f"没有找到与问题相关的{search_type}")
-            return ""
-        
-        # 合并相关上下文
-        contexts = []
-        for item in relevant_items:
-            if isinstance(item, tuple):
-                doc_id, content, similarity = item
-                contexts.append(content)
-            else:
-                logger.warning(f"搜索结果格式错误: {item}")
-                continue
-        
-        # 合并所有相关上下文
-        combined_context = "\n".join(contexts)
-        
-        # 如果上下文太长，截取最相关的部分
-        if len(combined_context) > 1000:
-            combined_context = combined_context[:1000] + "..."
-        
-        return combined_context
-        
-    def _extract_core_terms(self, text):
-        """从文本中提取核心词汇，去除停用词和标点符号"""
-        # 简单的中文停用词列表
-        stop_words = ['的', '了', '和', '是', '在', '我', '你', '他', '她', '它', '这', '那', '哪', '什么', '怎么', '如何', '为什么']
-        
-        # 去除标点和特殊字符
-        text = text.lower()
-        for char in ',.?!;:，。？！；：""\'\'""《》【】()（）[]{}':
-            text = text.replace(char, '')
-            
-        # 分词并去除停用词
-        words = text.split()
-        core_words = [w for w in words if w not in stop_words and len(w.strip()) > 0]
-        
-        return core_words
-        
-    def _calculate_question_similarity(self, q1, q2):
-        """计算两个问题的相似度，综合多种匹配方式"""
-        # 1. 准备文本
-        q1 = q1.lower().strip()
-        q2 = q2.lower().strip()
-        
-        # 2. 完全匹配检查
-        if q1 == q2:
-            return 1.0
-            
-        # 3. 包含关系检查 - 一个问题是另一个的子串
-        if q1 in q2 or q2 in q1:
-            # 计算更长问题中较短问题占的比例
-            short_q, long_q = (q1, q2) if len(q1) <= len(q2) else (q2, q1)
-            return 0.8 * (len(short_q) / len(long_q))
-        
-        # 4. 关键词匹配
-        # 去除标点和停用词
-        q1_core = self._extract_core_terms(q1)
-        q2_core = self._extract_core_terms(q2)
-        
-        # 如果没有提取到核心词，回退到原始分词
-        if not q1_core:
-            q1_core = q1.split()
-        if not q2_core:
-            q2_core = q2.split()
-        
-        # 计算Jaccard相似度（集合交集/并集）
-        if q1_core and q2_core:
-            q1_set = set(q1_core)
-            q2_set = set(q2_core)
-            intersection = len(q1_set.intersection(q2_set))
-            union = len(q1_set.union(q2_set))
-            jaccard = intersection / union if union > 0 else 0
-            
-            # 5. 计算词序相似度
-            # 检查核心词的顺序匹配程度
-            order_similarity = 0
-            if intersection > 1:  # 至少有2个共同词才考虑顺序
-                common_words = q1_set.intersection(q2_set)
-                q1_order = [w for w in q1_core if w in common_words]
-                q2_order = [w for w in q2_core if w in common_words]
-                
-                # 计算最长公共子序列
-                order_match = 0
-                for i in range(min(len(q1_order), len(q2_order))):
-                    if q1_order[i] == q2_order[i]:
-                        order_match += 1
-                        
-                max_possible = min(len(q1_order), len(q2_order))
-                order_similarity = order_match / max_possible if max_possible > 0 else 0
-            
-            # 综合评分: Jaccard + 顺序加权
-            final_score = jaccard * 0.7 + order_similarity * 0.3
-            
-            # 特殊情况处理：提升短问题的匹配度
-            # 例如"周末去哪"和"周末去哪玩"应该高度相似
-            if min(len(q1), len(q2)) < 8 and intersection / min(len(q1_set), len(q2_set)) > 0.7:
-                final_score = max(final_score, 0.8)
-                
-            return final_score
-        
-        return 0.0
-
-    def _compute_document_embeddings(self):
-        """计算文档的嵌入向量"""
-        try:
-            if self.model is not None:
-                # 使用BERT计算文档嵌入
-                embeddings = []
-                for doc in self.documents.values():
-                    # 对文档进行分词和编码
-                    inputs = self.tokenizer(
-                        doc,
-                        max_length=512,
-                        padding='max_length',
-                        truncation=True,
-                        return_tensors='pt'
-                    )
-                    
-                    # 计算BERT嵌入
-                    with torch.no_grad():
-                        outputs = self.model(**inputs)
-                        # 使用[CLS]标记的输出作为文档表示
-                        embedding = outputs.last_hidden_state[0, 0, :].numpy()
-                        embeddings.append(embedding)
-                        
-                self.embeddings = dict(zip(self.documents.keys(), embeddings))
-            else:
-                # 使用TF-IDF计算文档嵌入
-                texts = list(self.documents.values())
-                self.embeddings = dict(zip(self.documents.keys(), self.vectorizer.fit_transform(texts).toarray()))
-                
-            logger.info("文档嵌入计算完成")
-            
-        except Exception as e:
-            logger.error(f"计算文档嵌入时出错: {str(e)}")
-            self.embeddings = None
-            
-    def add_document(self, text, source=None):
-        """添加新文档到知识库"""
-        try:
-            self.documents[source] = text
-            
-            # 重新计算文档嵌入
-            self._compute_document_embeddings()
+            logger.info(f"成功加载了 {len(self.documents)} 个文档")
+            logger.info(f"从文档中提取了 {len(self.qa_pairs)} 个问答对")
             return True
             
         except Exception as e:
-            logger.error(f"添加文档时出错: {str(e)}")
+            logger.error(f"加载文档时出错: {str(e)}")
             return False
             
-    def remove_document(self, source):
-        """从知识库中移除文档"""
+    def _calculate_semantic_similarity(self, q1: str, q2: str, q1_embedding: np.ndarray) -> float:
+        """计算两个问题的语义相似度"""
         try:
-            if source in self.documents:
-                self.documents.pop(source)
-                # 重新计算文档嵌入
-                self._compute_document_embeddings()
-                return True
-            return False
+            # 获取第二个问题的嵌入
+            q2_embedding = self._get_question_embedding(q2)
+            
+            # 计算余弦相似度
+            semantic_similarity = np.dot(q1_embedding, q2_embedding)
+            
+            # 计算词重叠相似度
+            words1 = set(jieba.cut(q1))
+            words2 = set(jieba.cut(q2))
+            word_overlap = len(words1.intersection(words2)) / len(words1.union(words2)) if words1.union(words2) else 0
+            
+            # 综合两种相似度
+            final_similarity = 0.7 * semantic_similarity + 0.3 * word_overlap
+            
+            return final_similarity
             
         except Exception as e:
-            logger.error(f"移除文档时出错: {str(e)}")
-            return False 
+            logger.error(f"计算语义相似度时出错: {str(e)}")
+        return 0.0
+
+    def _get_context_for_question(self, question: str) -> str:
+        """为问题获取相关上下文"""
+        try:
+            # 获取文档嵌入
+            model, tokenizer = model_cache.get_model()
+            
+            # 编码问题
+            question_embedding = self._get_question_embedding(question)
+            
+            # 计算相似度并获取最相关的文档
+            similarities = []
+            for doc_id, doc_content in self.documents.items():
+                # 获取或计算文档嵌入
+                doc_embedding = document_cache.get_embedding(doc_id)
+                if doc_embedding is None:
+                    doc_embedding = self._encode_text(doc_content, model, tokenizer)
+                    document_cache.set_embedding(doc_id, doc_embedding)
+                    
+                # 计算相似度
+                similarity = np.dot(question_embedding, doc_embedding)
+                similarities.append((doc_id, similarity))
+                
+            # 按相似度排序
+            similarities.sort(key=lambda x: x[1], reverse=True)
+            
+            # 获取最相关的文档内容
+            contexts = []
+            for doc_id, _ in similarities[:self.model_config['TOP_K']]:
+                contexts.append(self.documents[doc_id])
+                
+            return "\n".join(contexts)
+            
+        except Exception as e:
+            logger.error(f"获取上下文时出错: {str(e)}")
+            return ""
+            
+    def _encode_text(self, text: str, model, tokenizer) -> np.ndarray:
+        """编码文本"""
+        try:
+            # 对文本进行编码
+            inputs = tokenizer(
+                text,
+                max_length=self.model_config['MAX_LENGTH'],
+                padding=True,
+                truncation=True,
+                return_tensors="pt"
+            )
+            
+            # 计算BERT嵌入
+            with torch.no_grad():
+                # 使用模型的encoder部分获取隐藏状态
+                outputs = model.bert(**inputs)
+                # 使用[CLS]标记的输出作为文本表示
+                embedding = outputs.last_hidden_state[0, 0, :].numpy()
+                # 归一化
+                embedding = embedding / np.linalg.norm(embedding)
+                return embedding
+            
+        except Exception as e:
+            logger.error(f"编码文本时出错: {str(e)}")
+            return np.zeros(768)  # 返回零向量作为后备方案
+
+# 创建全局知识管理器实例
+knowledge_manager = KnowledgeManager() 
