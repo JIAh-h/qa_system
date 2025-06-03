@@ -1,51 +1,52 @@
 import os
 import glob
+import json
 import logging
 from typing import Dict, List, Tuple
 import numpy as np
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, BertForQuestionAnswering, pipeline
 import torch
-from torch.nn.functional import normalize
 import time
 import traceback
+import jieba
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class KnowledgeManager:
-    def __init__(self, encoder_model="sentence-transformers/all-MiniLM-L6-v2"):
+    def __init__(self, encoder_model="models/bert_qa"):
         """初始化知识库管理器"""
         self.encoder_model = encoder_model
-        self.documents = {}  # 文档ID到文档内容的映射
-        self.embeddings = {}  # 文档ID到嵌入向量的映射
-        self.document_chunks = {}  # 文档ID到文档分块的映射
-        self.chunk_embeddings = {}  # 文档分块ID到嵌入向量的映射
+        self.tokenizer = None
+        self.model = None
+        self.qa_pipeline = None
+        self.qa_pairs = []  # 存储问答对
         
-        # 初始化编码器
+        # 初始化模型
         try:
-            logger.info(f"加载编码器模型: {encoder_model}")
-            self.tokenizer = AutoTokenizer.from_pretrained(encoder_model)
-            self.model = AutoModel.from_pretrained(encoder_model)
+            logger.info(f"加载本地预训练模型: {encoder_model}")
+            self.tokenizer = AutoTokenizer.from_pretrained(encoder_model, local_files_only=True)
+            self.model = BertForQuestionAnswering.from_pretrained(encoder_model, local_files_only=True)
             
             # 设置设备
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             logger.info(f"使用设备: {self.device}")
             self.model.to(self.device)
+            
+            # 初始化问答pipeline
+            self.qa_pipeline = pipeline(
+                "question-answering",
+                model=self.model,
+                tokenizer=self.tokenizer,
+                device=0 if torch.cuda.is_available() else -1
+            )
+            
         except Exception as e:
-            logger.error(f"初始化编码器失败: {str(e)}")
-            # 使用后备模型
-            try:
-                logger.info("尝试使用后备模型: distilbert-base-uncased")
-                self.encoder_model = "distilbert-base-uncased"
-                self.tokenizer = AutoTokenizer.from_pretrained(self.encoder_model)
-                self.model = AutoModel.from_pretrained(self.encoder_model)
-                self.model.to(self.device)
-            except Exception as e2:
-                logger.error(f"加载后备模型也失败: {str(e2)}")
-                raise
-    
-    def load_documents_from_directory(self, directory_path: str, extensions: List[str] = ['.txt', '.md']) -> Dict[str, str]:
+            logger.error(f"初始化模型失败: {str(e)}")
+            raise
+
+    def load_documents_from_directory(self, directory_path: str, extensions: List[str] = ['.txt', '.md', '.json']) -> Dict[str, str]:
         """从目录加载文档"""
         logger.info(f"从目录加载文档: {directory_path}")
         
@@ -70,11 +71,27 @@ class KnowledgeManager:
         for file_path in all_files:
             doc_id = os.path.basename(file_path)
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
+                if file_path.endswith('.json'):
+                    # 处理JSON文件
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        # 处理对话列表
+                        for conv in data:
+                            if isinstance(conv, list) and len(conv) >= 2:
+                                # 将对话转换为问答对
+                                for i in range(0, len(conv)-1, 2):
+                                    if i+1 < len(conv):
+                                        self.qa_pairs.append((conv[i], conv[i+1]))
+                        content = json.dumps(data, ensure_ascii=False)
+                else:
+                    # 处理其他类型的文件
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                
                 if not content.strip():
                     logger.warning(f"文档 {doc_id} 为空")
                     continue
+                    
                 loaded_docs[doc_id] = content
                 logger.info(f"加载文档: {doc_id}, 长度: {len(content)} 字符")
             except Exception as e:
@@ -84,9 +101,70 @@ class KnowledgeManager:
             logger.warning("没有成功加载任何文档")
         else:
             logger.info(f"成功加载了 {len(loaded_docs)} 个文档")
+            logger.info(f"从文档中提取了 {len(self.qa_pairs)} 个问答对")
             
-        self.documents.update(loaded_docs)
         return loaded_docs
+
+    def _calculate_similarity(self, q1: str, q2: str) -> float:
+        """计算两个问题的相似度"""
+        # 使用jieba分词
+        words1 = set(jieba.cut(q1))
+        words2 = set(jieba.cut(q2))
+        
+        # 计算Jaccard相似度
+        intersection = len(words1.intersection(words2))
+        union = len(words1.union(words2))
+        
+        return intersection / union if union > 0 else 0
+
+    def generate_answer(self, question: str) -> str:
+        """生成答案，优先使用数据集中的回答"""
+        try:
+            if not question or not question.strip():
+                return "问题不能为空"
+            
+            # 首先在数据集中查找相似问题
+            best_similarity = 0.3  # 设置相似度阈值
+            best_answer = None
+            
+            for q, a in self.qa_pairs:
+                similarity = self._calculate_similarity(question, q)
+                if similarity > best_similarity:
+                    best_similarity = similarity
+                    best_answer = a
+            
+            # 如果在数据集中找到相似问题，返回对应的答案
+            if best_answer:
+                return best_answer
+            
+            # 如果没有找到相似问题，使用模型生成答案
+            context = """
+            这是一个智能问答系统。我可以回答各种问题。
+            如果你问好，我会说：你好！很高兴见到你。
+            如果你问天气，我会说：抱歉，我暂时无法获取实时天气信息。
+            如果你问时间，我会说：抱歉，我暂时无法获取实时时间信息。
+            如果你问其他问题，我会尽力给出合适的回答。
+            """
+            
+            result = self.qa_pipeline(
+                question=question,
+                context=context,
+                max_answer_len=100,
+                handle_impossible_answer=True
+            )
+            
+            if result and 'answer' in result and result['answer']:
+                return result['answer']
+            else:
+                return "抱歉，我暂时无法回答这个问题。请换个方式提问，或者询问其他问题。"
+            
+        except Exception as e:
+            logger.error(f"生成答案时出错: {str(e)}")
+            return "抱歉，生成答案时出现错误。"
+
+    def _tokenize(self, text):
+        """使用jieba进行中文分词"""
+        return list(jieba.cut(text))
     
     def chunk_documents(self, chunk_size: int = 500, chunk_overlap: int = 100) -> Dict[str, List[Tuple[str, str]]]:
         """将文档分块"""
@@ -99,39 +177,17 @@ class KnowledgeManager:
         chunked_docs = {}
         
         for doc_id, content in self.documents.items():
-            # 更智能的分块 - 尝试在段落或句子边界分割
+            # 按对话分块
+            conversations = content.split('\n')
             chunks = []
             
-            # 首先按段落分割
-            paragraphs = content.split('\n\n')
-            current_chunk = ""
-            current_start = 0
-            
-            for paragraph in paragraphs:
-                paragraph = paragraph.strip()
-                if not paragraph:
+            for i, conv in enumerate(conversations):
+                if not conv.strip():
                     continue
                     
-                # 如果当前段落加上已有内容超过了块大小，则创建新块
-                if len(current_chunk) + len(paragraph) + 2 > chunk_size and current_chunk:
-                    chunk_id = f"{doc_id}_chunk_{current_start}"
-                    chunks.append((chunk_id, current_chunk))
-                    
-                    # 计算新的开始位置，考虑重叠
-                    overlap_chars = min(chunk_overlap, len(current_chunk))
-                    current_start = max(0, len(current_chunk) - overlap_chars)
-                    current_chunk = current_chunk[-overlap_chars:] if overlap_chars > 0 else ""
-                
-                # 添加段落到当前块
-                if current_chunk:
-                    current_chunk += "\n\n" + paragraph
-                else:
-                    current_chunk = paragraph
-            
-            # 处理最后一个块
-            if current_chunk:
-                chunk_id = f"{doc_id}_chunk_{current_start}"
-                chunks.append((chunk_id, current_chunk))
+                # 每个对话作为一个块
+                chunk_id = f"{doc_id}_chunk_{i}"
+                chunks.append((chunk_id, conv))
             
             chunked_docs[doc_id] = chunks
             logger.info(f"文档 {doc_id} 被分成了 {len(chunks)} 个块")
@@ -172,9 +228,9 @@ class KnowledgeManager:
                     
                     # 使用最后一层隐藏状态的平均值作为文本嵌入
                     attention_mask = inputs['attention_mask']
+                    embeddings = outputs.last_hidden_state
                     
                     # 对隐藏状态求平均
-                    embeddings = outputs.last_hidden_state
                     mask = attention_mask.unsqueeze(-1).expand(embeddings.size()).float()
                     masked_embeddings = embeddings * mask
                     summed = torch.sum(masked_embeddings, dim=1)
@@ -266,16 +322,11 @@ class KnowledgeManager:
                 # 从chunk_id中提取原始文档ID
                 doc_id = chunk_id.split('_chunk_')[0]
                 # 获取块内容
-                chunk_content = ""
-                for doc_chunks in self.document_chunks.values():
-                    for c_id, c_content in doc_chunks:
-                        if c_id == chunk_id:
-                            chunk_content = c_content
-                            break
-                    if chunk_content:
+                chunk_content = self.document_chunks.get(doc_id, [])
+                for c_id, c_content in chunk_content:
+                    if c_id == chunk_id:
+                        results.append((doc_id, c_content, float(similarity)))
                         break
-                
-                results.append((doc_id, chunk_content, float(similarity)))
         
         # 按相似度排序
         results.sort(key=lambda x: x[2], reverse=True)
@@ -288,51 +339,6 @@ class KnowledgeManager:
         if not question or not question.strip():
             logger.warning("提供的问题为空")
             return ""
-            
-        # 先尝试从datas.txt直接查找答案（如果是datas.txt文件）
-        for doc_id, content in self.documents.items():
-            if doc_id.lower() == "datas.txt":
-                try:
-                    # 解析问答对
-                    parts = content.strip().split('问：')
-                    parts = [p for p in parts if p.strip()]
-                    
-                    best_match = None
-                    best_match_score = 0
-                    best_answer = None
-                    
-                    # 预处理查询问题 - 去除停用词和标点符号，提取核心词
-                    query_core = self._extract_core_terms(question)
-                    
-                    for part in parts:
-                        qa_split = part.strip().split('答：', 1)
-                        if len(qa_split) == 2:
-                            q = qa_split[0].strip()
-                            a = qa_split[1].strip()
-                            
-                            # 更强的问题相似度计算
-                            score = self._calculate_question_similarity(q, question)
-                            
-                            # 如果找到更好的匹配
-                            if score > best_match_score:
-                                best_match = q
-                                best_answer = a
-                                best_match_score = score
-                    
-                    # 降低匹配阈值，但确保有一定相关性
-                    if best_match and best_match_score > 0.3:
-                        logger.info(f"从datas.txt中找到匹配问题: {best_match}, 相似度: {best_match_score}")
-                        # 如果答案包含多个句子，只返回第一句
-                        sentences = best_answer.split('。')
-                        if len(sentences) > 1:
-                            first_sentence = sentences[0].strip() + '。'
-                            logger.info(f"只返回第一句答案: {first_sentence}")
-                            return first_sentence
-                        else:
-                            # 确保答案干净（无问答标记）
-                            return best_answer
-                except Exception as e:
-                    logger.error(f"解析datas.txt失败: {str(e)}")
         
         # 确保已编码文档
         if not self.chunk_embeddings and not self.embeddings:
@@ -347,31 +353,30 @@ class KnowledgeManager:
         search_type = 'chunk' if self.chunk_embeddings else 'document'
         
         # 搜索与问题相关的文档块或文档
-        relevant_items = self.search(question, search_type, top_k=1)  # 只获取最相关的一个结果
+        relevant_items = self.search(question, search_type, top_k=top_k)
         
         if not relevant_items:
             logger.warning(f"没有找到与问题相关的{search_type}")
             return ""
         
-        # 将相关块合并为上下文，但只使用最匹配的一个
-        top_item = relevant_items[0]
-        doc_id, content, similarity = top_item
-        
-        # 如果内容太长，尝试截取第一句或第一段
-        if len(content) > 200:
-            sentences = content.split('。')
-            if len(sentences) > 1:
-                content = sentences[0].strip() + '。'
+        # 合并相关上下文
+        contexts = []
+        for item in relevant_items:
+            if isinstance(item, tuple):
+                doc_id, content, similarity = item
+                contexts.append(content)
             else:
-                paragraphs = content.split('\n')
-                if len(paragraphs) > 1:
-                    content = paragraphs[0].strip()
-                else:
-                    # 如果没有明确的句子或段落分隔，取前200个字符
-                    content = content[:200] + '...'
+                logger.warning(f"搜索结果格式错误: {item}")
+                continue
         
-        logger.info(f"返回最匹配的上下文，相似度: {similarity}")
-        return content
+        # 合并所有相关上下文
+        combined_context = "\n".join(contexts)
+        
+        # 如果上下文太长，截取最相关的部分
+        if len(combined_context) > 1000:
+            combined_context = combined_context[:1000] + "..."
+        
+        return combined_context
         
     def _extract_core_terms(self, text):
         """从文本中提取核心词汇，去除停用词和标点符号"""
@@ -451,4 +456,66 @@ class KnowledgeManager:
                 
             return final_score
         
-        return 0.0 
+        return 0.0
+
+    def _compute_document_embeddings(self):
+        """计算文档的嵌入向量"""
+        try:
+            if self.model is not None:
+                # 使用BERT计算文档嵌入
+                embeddings = []
+                for doc in self.documents.values():
+                    # 对文档进行分词和编码
+                    inputs = self.tokenizer(
+                        doc,
+                        max_length=512,
+                        padding='max_length',
+                        truncation=True,
+                        return_tensors='pt'
+                    )
+                    
+                    # 计算BERT嵌入
+                    with torch.no_grad():
+                        outputs = self.model(**inputs)
+                        # 使用[CLS]标记的输出作为文档表示
+                        embedding = outputs.last_hidden_state[0, 0, :].numpy()
+                        embeddings.append(embedding)
+                        
+                self.embeddings = dict(zip(self.documents.keys(), embeddings))
+            else:
+                # 使用TF-IDF计算文档嵌入
+                texts = list(self.documents.values())
+                self.embeddings = dict(zip(self.documents.keys(), self.vectorizer.fit_transform(texts).toarray()))
+                
+            logger.info("文档嵌入计算完成")
+            
+        except Exception as e:
+            logger.error(f"计算文档嵌入时出错: {str(e)}")
+            self.embeddings = None
+            
+    def add_document(self, text, source=None):
+        """添加新文档到知识库"""
+        try:
+            self.documents[source] = text
+            
+            # 重新计算文档嵌入
+            self._compute_document_embeddings()
+            return True
+            
+        except Exception as e:
+            logger.error(f"添加文档时出错: {str(e)}")
+            return False
+            
+    def remove_document(self, source):
+        """从知识库中移除文档"""
+        try:
+            if source in self.documents:
+                self.documents.pop(source)
+                # 重新计算文档嵌入
+                self._compute_document_embeddings()
+                return True
+            return False
+            
+        except Exception as e:
+            logger.error(f"移除文档时出错: {str(e)}")
+            return False 

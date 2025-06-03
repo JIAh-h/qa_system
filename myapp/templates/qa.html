@@ -132,7 +132,7 @@
                 <div class="mb-4">
                     <label class="inline-flex items-center">
                         <input type="radio" name="train-type" value="kb_data" class="mr-2">
-                        <span>使用知识库中的datas.txt训练</span>
+                        <span>使用知识库中的train.json训练</span>
                     </label>
                 </div>
                 
@@ -371,9 +371,9 @@
                 const response = await fetch('/myapp/qa/', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `question=${encodeURIComponent(question)}`
+                    body: JSON.stringify({ question: question })
                 });
 
                 const data = await response.json();
