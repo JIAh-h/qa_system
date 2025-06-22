@@ -1,0 +1,21 @@
+# Python缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 数据/模型/日志
+*.zip
+*.tar.gz
+*.h5
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.log
+*.wandb
+*.pdf
+*.docx
+qa_system/logs/
+qa_system/models/
+qa_system/qa_model/
+qa_system/wandb/
