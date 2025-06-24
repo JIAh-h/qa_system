@@ -15,7 +15,8 @@ __pycache__/
 *.wandb
 *.pdf
 *.docx
-qa_system/logs/
-qa_system/models/
-qa_system/qa_model/
-qa_system/wandb/
+*.venv
+logs/
+models/
+qa_model/
+wandb/
