@@ -113,6 +113,7 @@ from myapp.knowledge_manager import knowledge_manager
 # 生成答案
 answer = knowledge_manager.generate_answer("你的问题")
 ```
+<img width="415" alt="image" src="https://github.com/user-attachments/assets/7321891a-f8b0-4fcf-8f99-300b3bc0463c" />
 
 ### 3. 模型训练
 
@@ -154,6 +155,7 @@ metrics = evaluate_model(
     metrics=["accuracy", "f1", "precision", "recall"]
 )
 ```
+<img width="415" alt="image" src="https://github.com/user-attachments/assets/d780b15d-4a9f-437f-9028-8e7daedf7e4b" />
 
 ## API接口
 
